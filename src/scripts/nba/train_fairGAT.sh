@@ -1,0 +1,11 @@
+python train_fairGNN.py \
+        --seed=42 \
+        --epochs=2000 \
+        --model=GAT \
+        --num-hidden=128\
+        --attn-drop=0.2\
+        --dataset=nba \
+        --acc=0.70 \
+        --roc=0.76 \
+        --alpha=10 \
+        --beta=0.01
