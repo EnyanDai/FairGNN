@@ -4,6 +4,7 @@ python train_fairGNN.py \
         --model=GCN \
         --sens_number=200 \
         --dataset=pokec_z \
+        --num-hidden=128 \
         --acc=0.69 \
         --roc=0.76 \
         --alpha=100 \

@@ -1,10 +1,12 @@
 python train_fairGNN.py \
         --seed=42 \
         --epochs=1800 \
-        --model=GCN \
+        --model=GAT \
         --sens_number=200 \
         --dataset=pokec_n \
-        --acc=0.68 \
-        --roc=0.730 \
-        --alpha=50 \
-        --beta=1
+        --num-hidden=64 \
+        --attn-drop=0.0 \
+        --acc=0.688 \
+        --roc=0.745 \
+        --alpha=4 \
+        --beta=0.01

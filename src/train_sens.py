@@ -26,10 +26,15 @@ parser.add_argument('--hidden', type=int, default=128,
                     help='Number of hidden units.')
 parser.add_argument('--dropout', type=float, default=0.5,
                     help='Dropout rate (1 - keep probability).')
+parser.add_argument('--sens_number', type=int, default=200,
+                    help="the number of sensitive attributes")
+parser.add_argument('--dataset', type=str, default='pokec_z',
+                    choices=['pokec_z','pokec_n','nba'])
 
 args = parser.parse_known_args()[0]
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 
+#%%
 #%%
 np.random.seed(args.seed)
 torch.manual_seed(args.seed)
@@ -37,23 +42,31 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 # Load data
+print(args.dataset)
 
-# dataset = "region_job"
-# sens_attr = "region"
-# predict_attr = "I_am_working_in_field"
-# label_number = 500
-# sens_number = 200
-# seed = 20
-# path="../dataset/pokec/"
+if args.dataset != 'nba':
+    if args.dataset == 'pokec_z':
+        dataset = 'region_job'
+    else:
+        dataset = 'region_job_2'
+    sens_attr = "region"
+    predict_attr = "I_am_working_in_field"
+    label_number = 500
+    sens_number = args.sens_number
+    seed = 20
+    path="../dataset/pokec/"
+    test_idx=False
+else:
+    dataset = 'nba'
+    sens_attr = "country"
+    predict_attr = "SALARY"
+    label_number = 100
+    sens_number = 50
+    seed = 20
+    path = "../dataset/NBA"
+    test_idx = True
+print(dataset)
 
-dataset = "nba"
-sens_attr = "country"
-predict_attr = "SALARY"
-label_number = 100
-sens_number = 50
-seed = 20
-path = "../dataset/NBA"
-test_idx = True
 adj, features, labels, idx_train, idx_val, idx_test,sens,idx_sens_train = load_pokec(dataset,
                                                                                     sens_attr,
                                                                                     predict_attr,
@@ -71,8 +84,6 @@ if dataset=="nba":
     features = feature_norm(features)
 
 #%%
-# predict_attr = "relation_to_smoking"
-# adj, features, sens, idx_sens_train, idx_val, idx_test,sens = load_pokec(dataset=dataset,predict_attr=predict_attr,number=5000)
 sens[sens>0]=1
 if sens_attr:
     sens[sens>0]=1
@@ -97,13 +108,10 @@ if args.cuda:
 
 from sklearn.metrics import accuracy_score,roc_auc_score,f1_score
 
-
-    
-
-
 # Train model
 t_total = time.time()
-best_roc = 0.0
+best_acc = 0.0
+best_test = 0.0
 for epoch in range(args.epochs+1):
     t = time.time()
     model.train()
@@ -120,17 +128,16 @@ for epoch in range(args.epochs+1):
         model.eval()
         output = model(G, features)
     if epoch%10==0:
-        roc_test = f1_score(sens[idx_test].cpu().numpy(),output[idx_test].detach().cpu().numpy()>0)
-        loss_test = F.binary_cross_entropy_with_logits(output[idx_test], sens[idx_test].unsqueeze(1).float())
+        acc_val = accuracy(output[idx_val], sens[idx_val])
         acc_test = accuracy(output[idx_test], sens[idx_test])
         print("Epoch [{}] Test set results:".format(epoch),
-            "loss= {:.4f}".format(loss_test.item()),
-            "accuracy= {:.4f}".format(acc_test.item()),
-            "ROC: {:.4f}".format(roc_test))
-        if acc_test > best_roc:
-            best_roc = acc_test
+            "acc_test= {:.4f}".format(acc_test.item()),
+            "acc_val: {:.4f}".format(acc_val.item()))
+        if acc_val > best_acc:
+            best_acc = acc_val
+            best_test = acc_test
             torch.save(model.state_dict(),"./checkpoint/GCN_sens_{}_ns_{}".format(dataset,sens_number))
-        print(best_roc)
+print("The accuracy of estimator: {:.4f}".format(best_test))
 
 print("Optimization Finished!")
 print("Total time elapsed: {:.4f}s".format(time.time() - t_total))

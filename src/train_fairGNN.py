@@ -24,7 +24,7 @@ parser.add_argument('--lr', type=float, default=0.001,
 parser.add_argument('--weight_decay', type=float, default=1e-5,
                     help='Weight decay (L2 loss on parameters).')
 parser.add_argument('--hidden', type=int, default=128,
-                    help='Number of hidden units.')
+                    help='Number of hidden units of the sensitive attribute estimator')
 parser.add_argument('--dropout', type=float, default=.5,
                     help='Dropout rate (1 - keep probability).')
 parser.add_argument('--alpha', type=float, default=4,
@@ -36,7 +36,7 @@ parser.add_argument('--model', type=str, default="GAT",
 parser.add_argument('--dataset', type=str, default='pokec_n',
                     choices=['pokec_z','pokec_n','nba'])
 parser.add_argument('--num-hidden', type=int, default=64,
-                    help='Number of hidden units.')
+                    help='Number of hidden units of classifier.')
 parser.add_argument("--num-heads", type=int, default=1,
                         help="number of hidden attention heads")
 parser.add_argument("--num-out-heads", type=int, default=1,
@@ -49,14 +49,18 @@ parser.add_argument("--attn-drop", type=float, default=.0,
                     help="attention dropout")
 parser.add_argument('--negative-slope', type=float, default=0.2,
                     help="the negative slope of leaky relu")
-parser.add_argument('--acc', type=float, default=0.688)
-parser.add_argument('--roc', type=float, default=0.745)
+parser.add_argument('--acc', type=float, default=0.688,
+                    help='the selected FairGNN accuracy on val would be at least this high')
+parser.add_argument('--roc', type=float, default=0.745,
+                    help='the selected FairGNN ROC score on val would be at least this high')
 parser.add_argument('--sens_number', type=int, default=200,
-                    help="number of sens")
+                    help="the number of sensitive attributes")
+parser.add_argument('--label_number', type=int, default=500,
+                    help="the number of labels")
 
 args = parser.parse_known_args()[0]
 args.cuda = not args.no_cuda and torch.cuda.is_available()
-
+print(args)
 #%%
 np.random.seed(args.seed)
 torch.manual_seed(args.seed)
@@ -73,7 +77,7 @@ if args.dataset != 'nba':
         dataset = 'region_job_2'
     sens_attr = "region"
     predict_attr = "I_am_working_in_field"
-    label_number = 500
+    label_number = args.label_number
     sens_number = args.sens_number
     seed = 20
     path="../dataset/pokec/"
@@ -196,9 +200,12 @@ print("Optimization Finished!")
 print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
 
 print('============performace on test set=============')
-print("Test:",
-        "accuracy: {:.4f}".format(best_result['acc']),
-        "roc: {:.4f}".format(best_result['roc']),
-        "acc_sens: {:.4f}".format(acc_sens),
-        "parity: {:.4f}".format(best_result['parity']),
-        "equality: {:.4f}".format(best_result['equality']))
+if len(best_result) > 0:
+    print("Test:",
+            "accuracy: {:.4f}".format(best_result['acc']),
+            "roc: {:.4f}".format(best_result['roc']),
+            "acc_sens: {:.4f}".format(acc_sens),
+            "parity: {:.4f}".format(best_result['parity']),
+            "equality: {:.4f}".format(best_result['equality']))
+else:
+    print("Please set smaller acc/roc thresholds")
