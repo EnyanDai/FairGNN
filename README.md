@@ -1,7 +1,6 @@
 # FairGNN 
 
-A PyTorch implementation of "FairGNN: Eliminating the Discrimination in Graph Neural
-Networks with Limited Sensitive Attribute Information" (WSDM 2021). [[paper]](https://arxiv.org/pdf/2009.01454.pdf)
+A PyTorch implementation of "Say No to the Discrimination: Learning Fair Graph Neural Networks with Limited Sensitive Attribute Information" (WSDM 2021). [[paper]](https://arxiv.org/pdf/2009.01454.pdf)
 
 
 <div align=center><img src="https://github.com/EnyanDai/FariGNN/blob/main/framework.png" width="700"/></div>
@@ -42,7 +41,8 @@ During the training phase, we will select the best epoch based on the performanc
 2. We will select the epoch whose summation of parity and equal opportunity is the smallest.
 
 ## Data Set
-Pokec_z and Pokec_n are sampled from [soc_Pokec](http://snap.stanford.edu/data/soc-Pokec.html).
+1. Pokec_z and Pokec_n are stored in [`dataset\pokec`](https://github.com/EnyanDai/FairGNN/tree/main/dataset/pokec) as `region_job.xxx` and `region_job_2.xxx`, respectively.
+They are sampled from [soc_Pokec](http://snap.stanford.edu/data/soc-Pokec.html). 
 
 ```
 @inproceedings{takac2012data,
@@ -53,7 +53,8 @@ Pokec_z and Pokec_n are sampled from [soc_Pokec](http://snap.stanford.edu/data/s
   number={6},
   year={2012}
 ```
-NBA is collected with through the Twitter social network and the players' information on [Kaggle](https://www.kaggle.com/noahgift/social-power-nba)
+2. NBA is stored in [`dataset\NBA`](https://github.com/EnyanDai/FairGNN/tree/main/dataset/NBA) as `nba.xxx`
+It is collected with through the Twitter social network and the players' information on [Kaggle](https://www.kaggle.com/noahgift/social-power-nba)
 ## Reproduce the results
 All the hyper-parameters settings are included in [`src\scripts`](https://github.com/EnyanDai/FariGNN/tree/main/src/scripts) folder.
 
@@ -72,7 +73,7 @@ bash scripts/pokec_z/train_fairGCN.sh
 If you find this repo to be useful, please cite our paper. Thank you.
 ```
 @article{dai2020fairgnn,
-  title={FairGNN: Eliminating the Discrimination in Graph Neural Networks with Limited Sensitive Attribute Information},
+  title={Say No to the Discrimination: Learning Fair Graph Neural Networks with Limited Sensitive Attribute Information},
   author={Dai, Enyan and Wang, Suhang},
   journal={arXiv preprint arXiv:2009.01454},
   year={2020}
