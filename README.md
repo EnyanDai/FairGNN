@@ -72,10 +72,11 @@ bash scripts/pokec_z/train_fairGCN.sh
 
 If you find this repo to be useful, please cite our paper. Thank you.
 ```
-@article{dai2020fairgnn,
+@inproceedings{dai2021say,
   title={Say No to the Discrimination: Learning Fair Graph Neural Networks with Limited Sensitive Attribute Information},
   author={Dai, Enyan and Wang, Suhang},
-  journal={arXiv preprint arXiv:2009.01454},
-  year={2020}
+  booktitle={Proceedings of the 14th ACM International Conference on Web Search and Data Mining},
+  pages={680--688},
+  year={2021}
 }
 ```
