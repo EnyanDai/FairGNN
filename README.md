@@ -56,13 +56,16 @@ They are sampled from [soc_Pokec](http://snap.stanford.edu/data/soc-Pokec.html).
 2. NBA is stored in [`dataset\NBA`](https://github.com/EnyanDai/FairGNN/tree/main/dataset/NBA) as `nba.xxx`
 It is collected with through the Twitter social network and the players' information on [Kaggle](https://www.kaggle.com/noahgift/social-power-nba)
 ## Reproduce the results
+
+***Please use DGL 0.4.3***, the version of the DGL can affect the results a lot.
 All the hyper-parameters settings are included in [`src\scripts`](https://github.com/EnyanDai/FariGNN/tree/main/src/scripts) folder.
 
 To reproduce the performance reported in the paper, you can run the bash files in folder `src\scripts`.
 ```
 bash scripts/pokec_z/train_fairGCN.sh
 ```
-
+Here are some example results:
+<div align=center><img src="https://github.com/EnyanDai/FariGNN/blob/main/result.png" width="500"/></div>
 
 
 
