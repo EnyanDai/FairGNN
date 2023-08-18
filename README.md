@@ -4,12 +4,6 @@ A PyTorch implementation of "Say No to the Discrimination: Learning Fair Graph N
 
 
 <div align=center><img src="https://github.com/EnyanDai/FariGNN/blob/main/framework.png" width="700"/></div>
-
-## Abstract 
-Graph neural networks (GNNs) have shown great power in modeling graph structured data. However, similar to other machine learning models, GNNs may make predictions biased on protected sensitive attributes, e.g., skin color, gender, and nationality. 
-Because machine learning algorithms including GNNs are trained to faithfully reflect the distribution of the training data which often contains historical bias towards sensitive attributes. In addition, the discrimination in GNNs can be magnified by graph structures and the message-passing mechanism. As a result, the applications of GNNs in sensitive domains such as crime rate prediction would be largely limited. Though extensive studies of fair classification have been conducted on i.i.d data, methods to address the problem of discrimination on non-i.i.d data are rather limited. Furthermore, 
-the practical scenario of sparse annotations in sensitive attributes is rarely considered in existing works. Therefore, we study the novel and important problem of learning fair GNNs with limited sensitive attribute information. FairGNN is proposed to eliminate the bias of GNNs whilst maintaining high node classification accuracy by leveraging graph structures and limited sensitive information. Our theoretical analysis shows that FairGNN can ensure the fairness of GNNs under mild conditions given limited nodes with known sensitive attributes. Extensive experiments on real-world datasets also demonstrate the effectiveness of FairGNN in debiasing and keeping high accuracy.
-
 ## Requirements
 
 ```
@@ -67,7 +61,8 @@ bash scripts/pokec_z/train_fairGCN.sh
 Here are some example results:
 <div align=center><img src="https://github.com/EnyanDai/FariGNN/blob/main/result.png" width="500"/></div>
 
-
+## PyG verision of FairGNN
+Thanks to the great work of the [PyG-Debias](https://github.com/yushundong/PyGDebias) contributors, the PyG verision of FairGNN is available now. Please check the [PyG-Debias package](https://github.com/yushundong/PyGDebias).
 
 
 
