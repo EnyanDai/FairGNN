@@ -4,6 +4,7 @@ A PyTorch implementation of "Say No to the Discrimination: Learning Fair Graph N
 
 
 <div align=center><img src="https://github.com/EnyanDai/FariGNN/blob/main/framework.png" width="700"/></div>
+
 ## Requirements
 
 ```
